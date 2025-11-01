@@ -1,11 +1,11 @@
 public static class Arrays
 {
-    /// <summary>
-    /// This function will produce an array of size 'length' starting with 'number' followed by multiples of 'number'.  For 
-    /// example, MultiplesOf(7, 5) will result in: {7, 14, 21, 28, 35}.  Assume that length is a positive
-    /// integer greater than 0.
-    /// </summary>
-    /// <returns>array of doubles that are the multiples of the supplied number</returns>
+      /// <summary>
+      /// This function will produce an array of size 'length' starting with 'number' followed by multiples of 'number'.  For 
+      /// example, MultiplesOf(7, 5) will result in: {7, 14, 21, 28, 35}.  Assume that length is a positive
+      /// integer greater than 0.
+      /// </summary>
+      /// <returns>array of doubles that are the multiples of the supplied number</returns>
     public static double[] MultiplesOf(double number, int length)
     {
         // TODO Problem 1 Start
@@ -13,7 +13,19 @@ public static class Arrays
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
 
-        return []; // replace this return statement with your own
+        /* MY SOLUTION
+        Declare a variable list with length equal to length variable to register the result
+        Create a for loop from i = 0 while i < length
+        For each iteration calculate number * (i + 1) to obtain a multiple of the number and add it to the result list
+        */
+        var results = new double[length];
+
+        for (int i = 0; i < length; i++)
+        {
+            results[i] = number * (i + 1);
+        }
+        
+        return results; // replace this return statement with your own
     }
 
     /// <summary>
@@ -29,5 +41,24 @@ public static class Arrays
         // Remember: Using comments in your program, write down your process for solving this problem
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
+
+        /* MY SOLUTION
+        Declare a variable to store de value to move.
+        Create a for loop from i = 0 while i <  amount
+        For each iteration:
+            Store the last value from the data to a store variable.
+            Remove the last value from the data
+            Insert the store variable to the begin of the data
+        */
+
+        var store = 0;
+
+        for (int i = 0; i < amount; i++)
+        {
+            store = data.Last();
+            data.RemoveAt(data.Count - 1);
+            data.Insert(0, store);
+        }
+
     }
 }
