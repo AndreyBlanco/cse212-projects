@@ -46,6 +46,13 @@ public class TakingTurnsQueue
                 _people.Enqueue(person);
             }
 
+            // MY SOLUTION
+            // add a else if to evaluate tuns = 0 or negatives
+            else if (person.Turns < 1)
+            {
+                _people.Enqueue(person);
+            }
+
             return person;
         }
     }
