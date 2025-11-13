@@ -1,4 +1,5 @@
-﻿public class DuplicateCounter
+﻿
+public class DuplicateCounter
 {
     //Count how many duplicates are in a collection of data.
 
@@ -25,6 +26,24 @@
     private static int CountDuplicates(int[] data)
     {
         // Add code here.
-        return 0;
+        HashSet<int> data1 = new HashSet<int>(data);
+        HashSet<int> data2 = new HashSet<int>(data);
+        data1.IntersectWith(data2);
+        return data1.Count;
+    }
+}
+
+internal class HashSet
+{
+    private int[] data;
+
+    public HashSet(int[] data)
+    {
+        this.data = data;
+    }
+
+    internal object Intersect(HashSet data2)
+    {
+        throw new NotImplementedException();
     }
 }
