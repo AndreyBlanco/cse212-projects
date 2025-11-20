@@ -11,6 +11,7 @@
  * Each row represents the player's stats for a single season with a single team.
  */
 
+using System.Linq;
 using Microsoft.VisualBasic.FileIO;
 
 public class Basketball
@@ -27,10 +28,56 @@ public class Basketball
             var fields = reader.ReadFields()!;
             var playerId = fields[0];
             var points = int.Parse(fields[8]);
+            if (players.ContainsKey(playerId))
+                players[playerId] += points;
+            else
+                players[playerId] = points;
         }
 
-        Console.WriteLine($"Players: {{{string.Join(", ", players)}}}");
+        //Console.WriteLine($"Players: {{{string.Join(", ", players)}}}");
 
         var topPlayers = new string[10];
+        var ordertopPlayers = new string[10];
+
+        foreach (var player in players)
+        {
+            for (var i = 0; i < 10; i++)
+            {
+                if (topPlayers[i] == null)
+                {
+                    topPlayers[i] = player.Key;
+                    break;
+                }
+
+                if (player.Value > players[topPlayers[i]])
+                {
+                    topPlayers[i] = player.Key;
+                    break;
+                }
+            }
+        }
+
+        Console.WriteLine($"Players: {{{string.Join(", ", topPlayers)}}}");
+
+        var order = players.OrderByDescending(par => par.Value).Take(10);
+
+        var count = 0;
+        foreach (var play in order)
+        {
+            ordertopPlayers[count] = play.Key;
+            count++;
+        }
+
+        Console.WriteLine($"Players: {{{string.Join(", ", ordertopPlayers)}}}");
+
+        var topPlayersol = players.ToArray();
+        Array.Sort(topPlayersol, (p1, p2) => p2.Value - p1.Value);
+
+        Console.WriteLine();
+        for (var i = 0; i < 10; ++i)
+        {
+            Console.WriteLine(topPlayersol[i]);
+        }
+
     }
 }
