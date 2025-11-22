@@ -1,3 +1,4 @@
+using System;
 using System.Text.Json;
 
 public static class SetsAndMaps
@@ -22,7 +23,22 @@ public static class SetsAndMaps
     public static string[] FindPairs(string[] words)
     {
         // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+
+        HashSet<string> wordset = new HashSet<string>(words);
+        List<string> pairs = new List<string>();
+
+        foreach (var word in wordset)
+        {
+            var reverse_word = string.Concat(word[1], word[0]);
+            if (wordset.Contains(reverse_word) && word != reverse_word)
+            {
+                pairs.Add(word + " & " + reverse_word);
+                wordset.Remove(reverse_word);
+            }
+        }
+
+
+        return pairs.ToArray();
     }
 
     /// <summary>
@@ -43,6 +59,15 @@ public static class SetsAndMaps
         {
             var fields = line.Split(",");
             // TODO Problem 2 - ADD YOUR CODE HERE
+            var field = fields[3];
+            if (!degrees.ContainsKey(field))
+            {
+                degrees.Add(field, 1);
+            }
+            else
+            {
+                degrees[field] += 1;
+            }
         }
 
         return degrees;
@@ -67,7 +92,36 @@ public static class SetsAndMaps
     public static bool IsAnagram(string word1, string word2)
     {
         // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        var cleanword1 = word1.Replace(" ", "").ToLower();
+        var cleanword2 = word2.Replace(" ", "").ToLower();
+        var isAnagram = false;
+
+        if (cleanword1.Length == cleanword2.Length)
+        {
+            var dic1 = CreateDictionary(cleanword1).OrderBy(ord => ord.Key).ToList();
+            var dic2 = CreateDictionary(cleanword2).OrderBy(ord => ord.Key).ToList();
+
+            static Dictionary<char, int> CreateDictionary(string word)
+            {
+                var dic = new Dictionary<char, int>();
+                for (var i = 0; i < word.Length; i++)
+                {
+                    var letter = word[i];
+                    if (!dic.ContainsKey(letter))
+                    {
+                        dic.TryAdd(letter, 1);
+                    }
+                    else
+                    {
+                        dic[letter] += 1;
+                    }
+                }
+                return dic;
+            }
+
+            isAnagram = dic1.SequenceEqual(dic2);
+        }
+        return isAnagram;
     }
 
     /// <summary>
@@ -84,6 +138,7 @@ public static class SetsAndMaps
     /// https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php
     /// 
     /// </summary>
+
     public static string[] EarthquakeDailySummary()
     {
         const string uri = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
@@ -101,6 +156,16 @@ public static class SetsAndMaps
         // on those classes so that the call to Deserialize above works properly.
         // 2. Add code below to create a string out each place a earthquake has happened today and its magitude.
         // 3. Return an array of these string descriptions.
-        return [];
+
+        var summary = new List<string>();
+        foreach (var feature in featureCollection.Features)
+        {
+            var place = feature.Properties.Place;
+            var mag = feature.Properties.Magnitude;
+            summary.Add(place + " - Mag " + mag);
+        }
+
+        return summary.ToArray();
     }
 }
+
