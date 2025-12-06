@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 public static class Trees
 {
     /// <summary>
@@ -49,5 +51,22 @@ public static class Trees
     private static void InsertMiddle(int[] sortedNumbers, int first, int last, BinarySearchTree bst)
     {
         // TODO Start Problem 5
+        if (sortedNumbers.Length > 0)
+        {
+            int middle = (last - first) / 2 + first;
+            Console.WriteLine("first: " + first + ", middle: " + middle + ", last: " + last + ", sorted: " + sortedNumbers[middle]);
+
+            bst.Insert(sortedNumbers[middle]);
+            if (last - first > 1)
+            {
+                InsertMiddle(sortedNumbers, first, middle - 1, bst);
+                InsertMiddle(sortedNumbers, middle + 1, last, bst);
+            }
+            else
+            {
+                bst.Insert(sortedNumbers[first]);
+                bst.Insert(sortedNumbers[last]);
+            }
+        }
     }
 }

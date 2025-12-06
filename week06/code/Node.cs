@@ -1,3 +1,6 @@
+using System.ComponentModel;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel;
+
 public class Node
 {
     public int Data { get; set; }
@@ -12,7 +15,6 @@ public class Node
     public void Insert(int value)
     {
         // TODO Start Problem 1
-
         if (value < Data)
         {
             // Insert to the left
@@ -21,7 +23,7 @@ public class Node
             else
                 Left.Insert(value);
         }
-        else
+        else if (value > Data)
         {
             // Insert to the right
             if (Right is null)
@@ -34,12 +36,45 @@ public class Node
     public bool Contains(int value)
     {
         // TODO Start Problem 2
-        return false;
+        var contain = false;
+
+        if (value == Data)
+        {
+            contain = true;
+        }
+        else if (value > Data)
+        {
+            if (Right is null)
+            {
+                contain = false;
+            }
+            else contain = Right.Contains(value);
+        }
+        else if (value < Data)
+        {
+            if (Left is null)
+            {
+                contain = false;
+            }
+            else contain = Left.Contains(value);
+        }
+
+        return contain;
     }
 
     public int GetHeight()
     {
         // TODO Start Problem 4
-        return 0; // Replace this line with the correct return statement(s)
+        var heightRight = 0;
+        var heightLeft = 0;
+        var result = 1;
+
+        if (Left is not null) heightLeft += Left.GetHeight();
+        if (Right is not null) heightRight += Right.GetHeight();
+
+        if (heightRight > heightLeft) result += heightRight;
+        else result += heightLeft;
+
+        return result; // Replace this line with the correct return statement(s)
     }
 }
